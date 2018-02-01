@@ -18,7 +18,7 @@ import com.yiqiniu.easytrans.core.EasytransConstant;
 import com.yiqiniu.easytrans.filter.EasyTransFilterChain;
 import com.yiqiniu.easytrans.filter.EasyTransResult;
 import com.yiqiniu.easytrans.idempotent.IdempotentHelper.IdempotentPo;
-import com.yiqiniu.easytrans.idempotent.exception.ResultWrapperExeception;
+import com.yiqiniu.easytrans.idempotent.exception.ResultWrapperException;
 import com.yiqiniu.easytrans.protocol.EasyTransRequest;
 import com.yiqiniu.easytrans.protocol.ExecuteOrder;
 import com.yiqiniu.easytrans.protocol.RpcBusinessProvider;
@@ -71,7 +71,7 @@ public class DefaultIdempotentHandlerFilter implements IdempotentHandlerFilter {
 									innerResult = filterChain.invokeFilterChain(header,request);
 									if (innerResult.hasException()) {
 										// throw an exception to roll back
-										throw new ResultWrapperExeception(innerResult);
+										throw new ResultWrapperException(innerResult);
 									}
 								}
 
@@ -172,7 +172,7 @@ public class DefaultIdempotentHandlerFilter implements IdempotentHandlerFilter {
 							
 							
 						});
-			} catch (ResultWrapperExeception e) {
+			} catch (ResultWrapperException e) {
 				result = e.getResult();
 			} catch (Throwable e) {
 				if (result == null) {
